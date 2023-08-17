@@ -10,7 +10,7 @@
     <script>
         let _html = {}
         let _request = {}
-        let userId = 4556; // Пользователь с ID=8 - не существует, поэтому был выбран существующий в базе сайта
+        let userId = 4556; // The user with ID=8 does not exist, so an existing one in the site database was selected
 
         _html.buttons =
         '<h1>Work with REST API</h1><hr/>' +
@@ -40,7 +40,7 @@
         })
         })
 
-        // Запрос информации о пользователе через REST
+        // Requesting user information via REST
         _request.getUserData = function () {
         fetch('https://gorest.co.in/public/v2/users/' + userId, {
             method: 'GET',
@@ -52,9 +52,9 @@
         })
             .then(data => data.json())
             .then(data => {
-                // Вывод информации в консоль
+                // Information output to the console
                 console.log('User (from gorest.co.in): ', data)
-                // Вывод информации о пользователе в контейнер HTML-страницы
+                // Output of user information to the HTML page container
                 document.getElementById('transaction-results').innerHTML =
                     'Id=' +
                     data.id +
@@ -68,7 +68,7 @@
             })
         }
 
-        // Изменение информации о пользователе на сервере
+        // Changing user information on the server
         _request.putUserData = function (_putObj) {
         fetch('https://gorest.co.in/public/v2/users/' + userId, {
             method: 'PUT',
@@ -93,22 +93,21 @@
                     '<br>Status=' +
                     data.status;
 
-                // Проверяем результат изменения данных на удаленном сервере  
+                  // Checking the result of data changes on the remote server
                   if ( _putObj.name == data.name &&
                        _putObj.email == data.email &&
                        _putObj.status == data.status ) {
-                    alert('SUCCESS (на основании ответа сервера по факту выполнения PUT-запроса)!');
+                    alert('SUCCESS (based on the server response upon the execution of the PUT request)!');
                   } else {
                     console.log(reject);
                     alert('PUT is failed!');
                   }
 
-                // Результату предыдущей проверки доверяю больше, 
-                // так как используется ответ сервера на изменяющий запрос,
-                // а после него эта запись может быть изменена или удалена 
-                // другим процессом или пользователем.
+                // I trust the result of the previous check more, since the server's response 
+                // to the modifying request is used, and after it this record can be changed 
+                // or deleted by another process or user.
 
-                // Производим считывание информации из БД
+                // We read information from the database
                 fetch('https://gorest.co.in/public/v2/users/' + userId, {
                     method: 'GET',
                     headers: {
@@ -119,14 +118,14 @@
                 })
                 .then(data => data.json())
                 .then(data => {
-                    // Проверяем результат изменения данных на удаленном сервере  
+                    // Checking the result of data changes on the remote server
                     if ( _putObj.name == data.name &&
                          _putObj.email == data.email &&
                          _putObj.status == data.status ) {
-                         alert('SUCCESS (по результату считывания данных из БД)!');
+                         alert('SUCCESS (based on the result of reading data from the database)!');
                     } else {
                          console.log(reject);
-                         alert('Не удалось получить данные записи с ID=' + userId);
+                         alert('Failed to get record data with ID=' + userId);
                     }
                 })
             })
